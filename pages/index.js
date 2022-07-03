@@ -13,7 +13,10 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Flex,
+  Spacer,
 } from "@chakra-ui/react";
+import { Center } from "@chakra-ui/react";
 
 const getWarzywa = async (key) => {
   console.log(key);
@@ -22,7 +25,7 @@ const getWarzywa = async (key) => {
   const doniczkaMiesiac = key.queryKey[1].doniczka;
   const rozsadaMiesiac = key.queryKey[1].rozsada;
 
-  const url = `${API_URL}/api/warzywas?`;
+  const url = `${API_URL}/api/warzywas?populate=*`;
 
   if (balkonMiesiac) {
     url += `&filters[balkon][$eq]=${balkonMiesiac}`;
@@ -58,7 +61,7 @@ export default function Home({ warzywa }) {
   const [balkonMiesiac, setBalkonMiesiac] = useState(null);
   const [doniczkaMiesiac, setDoniczkaMiesiac] = useState(null);
   const [rozsadaMiesiac, setRozsadaMiesiac] = useState(null);
-  //console.log(balkonMiesiac);
+  console.log(warzywa);
   const { data, status } = useQuery(
     [
       "warzywa",
@@ -170,8 +173,22 @@ export default function Home({ warzywa }) {
               data.data.map((warzywo, index) => (
                 <Tr>
                   <Td>
-                    <Image src={""} width={48} height={48} />
-                    {warzywo.attributes.name}
+                    <Flex>
+                      <Center w="90px">
+                        <Image
+                          src={
+                            warzywo.attributes.image.data
+                              ? warzywo.attributes.image.data.attributes.formats
+                                  .thumbnail.url
+                              : "https://res.cloudinary.com/novyapp/image/upload/v1656858203/placeholder-450x450_yqdlyo.png"
+                          }
+                          layout="intrinsic"
+                          width={60}
+                          height={60}
+                        />
+                      </Center>
+                      <Center>{warzywo.attributes.name}</Center>
+                    </Flex>
                   </Td>
                   <Td>{warzywo.attributes.rozsada}</Td>
                   <Td>{warzywo.attributes.doniczka}</Td>
