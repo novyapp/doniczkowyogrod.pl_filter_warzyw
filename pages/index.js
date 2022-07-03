@@ -2,6 +2,18 @@ import { API_URL } from "../config/index";
 import Select from "react-select";
 import { useQuery, useQueryClient } from "react-query";
 import { useState } from "react";
+import Image from "next/image";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from "@chakra-ui/react";
 
 const getWarzywa = async (key) => {
   console.log(key);
@@ -78,63 +90,97 @@ export default function Home({ warzywa }) {
     { value: "grudzień", label: "Grudzień" },
   ];
 
+  const customStyles = {
+    menuPortal: (provided) => ({ ...provided, zIndex: 5 }),
+  };
+
   return (
     <>
-      <div>Filter</div>
-      <Select
-        options={warzywa.data}
-        instanceId="warzywa"
-        placeholder="Warzywko"
-        getOptionLabel={(option) => `${option.attributes.name}`}
-        getOptionValue={(option) => `${option.id}`}
-        onChange={(values) => setWarzywniak(values ? values.id : null)}
-        isClearable
-      />
-      <Select
-        options={monthList}
-        instanceId="balkon"
-        placeholder="Balkon"
-        isOptionUnique="true"
-        getOptionLabel={(option) => `${option.label}`}
-        getOptionValue={(option) => `${option.value}`}
-        onChange={(values) => setBalkonMiesiac(values ? values.value : null)}
-        isClearable
-      />
-      <Select
-        options={monthList}
-        instanceId="doniczka"
-        placeholder="Doniczka"
-        getOptionLabel={(option) => `${option.label}`}
-        getOptionValue={(option) => `${option.value}`}
-        onChange={(values) => setDoniczkaMiesiac(values ? values.value : null)}
-        isClearable
-      />
-      <Select
-        options={monthList}
-        instanceId="rozsada"
-        placeholder="Rozsada"
-        getOptionLabel={(option) => `${option.label}`}
-        getOptionValue={(option) => `${option.value}`}
-        onChange={(values) => setRozsadaMiesiac(values ? values.value : null)}
-        isClearable
-      />
-      <div>
-        {status === "loading" && <div>Ładowanie wrzywniaka</div>}
-        {status === "error" && <div>Ups... coś przestało działać</div>}
-        {status === "success" &&
-          data.data.map((warzywo, index) => (
-            <div key={index}>
-              {warzywo.attributes.name}
-              <br />
-              Rozasada: {warzywo.attributes.rozsada}
-              <br />
-              Doniczka: {warzywo.attributes.doniczka}
-              <br />
-              Balkon: {warzywo.attributes.balkon}
-              <br />
-            </div>
-          ))}
-      </div>
+      <TableContainer>
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>
+                <Select
+                  menuPosition={"fixed"}
+                  styles={customStyles}
+                  options={warzywa.data}
+                  instanceId="warzywa"
+                  placeholder="Roślina"
+                  getOptionLabel={(option) => `${option.attributes.name}`}
+                  getOptionValue={(option) => `${option.id}`}
+                  onChange={(values) =>
+                    setWarzywniak(values ? values.id : null)
+                  }
+                  isClearable
+                />
+              </Th>
+              <Th>
+                <Select
+                  menuPosition={"fixed"}
+                  styles={customStyles}
+                  options={monthList}
+                  instanceId="rozsada"
+                  placeholder="Kiedy na rozsadę"
+                  getOptionLabel={(option) => `${option.label}`}
+                  getOptionValue={(option) => `${option.value}`}
+                  onChange={(values) =>
+                    setRozsadaMiesiac(values ? values.value : null)
+                  }
+                  isClearable
+                />
+              </Th>
+              <Th>
+                <Select
+                  menuPosition={"fixed"}
+                  styles={customStyles}
+                  options={monthList}
+                  instanceId="doniczka"
+                  placeholder="Kiedy do doniczki"
+                  getOptionLabel={(option) => `${option.label}`}
+                  getOptionValue={(option) => `${option.value}`}
+                  onChange={(values) =>
+                    setDoniczkaMiesiac(values ? values.value : null)
+                  }
+                  isClearable
+                />
+              </Th>
+              <Th>
+                <Select
+                  menuPosition={"fixed"}
+                  styles={customStyles}
+                  options={monthList}
+                  instanceId="balkon"
+                  placeholder="Kiedy na balkon"
+                  isOptionUnique="true"
+                  getOptionLabel={(option) => `${option.label}`}
+                  getOptionValue={(option) => `${option.value}`}
+                  onChange={(values) =>
+                    setBalkonMiesiac(values ? values.value : null)
+                  }
+                  isClearable
+                />
+              </Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {status === "loading" && <div>Ładowanie wrzywniaka</div>}
+            {status === "error" && <div>Ups... coś przestało działać</div>}
+            {status === "success" &&
+              data.data.map((warzywo, index) => (
+                <Tr>
+                  <Td>
+                    <Image src={""} width={48} height={48} />
+                    {warzywo.attributes.name}
+                  </Td>
+                  <Td>{warzywo.attributes.rozsada}</Td>
+                  <Td>{warzywo.attributes.doniczka}</Td>
+                  <Td>{warzywo.attributes.balkon}</Td>
+                </Tr>
+              ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
     </>
   );
 }
