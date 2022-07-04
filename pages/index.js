@@ -193,8 +193,7 @@ export default function Home({ warzywa }) {
                         <Image
                           src={
                             warzywo.attributes.image.data
-                              ? warzywo.attributes.image.data.attributes.formats
-                                  .thumbnail.url
+                              ? warzywo.attributes.image.data.attributes.url
                               : "https://res.cloudinary.com/novyapp/image/upload/v1656858203/placeholder-450x450_yqdlyo.png"
                           }
                           layout="intrinsic"
