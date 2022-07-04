@@ -229,13 +229,13 @@ export default function Home({ warzywa }) {
                   </Td>
                   <Td>
                     <Flex>
-                      {status === "success" &&
-                        warzywo.attributes.balkon.map((kiedy, index) => (
-                          <Center key={index}>
-                            {kiedy.kiedy} {index ? ", " : ""}
-                            {kiedy.prefix ? ` (${kiedy.prefix})` : null}
-                          </Center>
-                        ))}
+                      {warzywo.attributes.balkon.map((kiedy, index) => (
+                        <Center key={index}>
+                          {index ? ", " : ""}
+                          {kiedy.kiedy}
+                          {kiedy.prefix ? ` (${kiedy.prefix})` : null}
+                        </Center>
+                      ))}
                     </Flex>
                   </Td>
                 </Tr>
