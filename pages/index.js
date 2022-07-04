@@ -7,14 +7,11 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Flex,
-  Spacer,
   Text,
 } from "@chakra-ui/react";
 import { Center } from "@chakra-ui/react";
@@ -65,7 +62,8 @@ export default function Home({ warzywa }) {
     }
   );
 
-  const monthList = [
+  const rozsadaList = [
+    { value: "uprawa bez rozsady", label: "Uprawa bez rozsady" },
     { value: "styczeń", label: "Styczeń" },
     { value: "luty", label: "Luty" },
     { value: "marzec", label: "Marzec" },
@@ -79,6 +77,37 @@ export default function Home({ warzywa }) {
     { value: "listopad", label: "Listopad" },
     { value: "grudzień", label: "Grudzień" },
   ];
+  const doniczkaList = [
+    { value: "uprawa tylko z rozsady", label: "Uprawa tylko z rozsady" },
+    { value: "styczeń", label: "Styczeń" },
+    { value: "luty", label: "Luty" },
+    { value: "marzec", label: "Marzec" },
+    { value: "kwiecień", label: "Kwiecień" },
+    { value: "maj", label: "Maj" },
+    { value: "czerwiec", label: "Czerwiec" },
+    { value: "lipiec", label: "Lipiec" },
+    { value: "sierpień", label: "Sierpień" },
+    { value: "wrzesień", label: "Wrzesień" },
+    { value: "październik", label: "Październik" },
+    { value: "listopad", label: "Listopad" },
+    { value: "grudzień", label: "Grudzień" },
+  ];
+  const balkonList = [
+    { value: "uprawa bez rozsady", label: "Uprawa bez rozsady" },
+    { value: "styczeń", label: "Styczeń" },
+    { value: "luty", label: "Luty" },
+    { value: "marzec", label: "Marzec" },
+    { value: "kwiecień", label: "Kwiecień" },
+    { value: "maj", label: "Maj" },
+    { value: "czerwiec", label: "Czerwiec" },
+    { value: "lipiec", label: "Lipiec" },
+    { value: "sierpień", label: "Sierpień" },
+    { value: "wrzesień", label: "Wrzesień" },
+    { value: "październik", label: "Październik" },
+    { value: "listopad", label: "Listopad" },
+    { value: "grudzień", label: "Grudzień" },
+  ];
+
   const customStyles = {
     menuPortal: (provided) => ({ ...provided, zIndex: 5 }),
   };
@@ -93,7 +122,7 @@ export default function Home({ warzywa }) {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>
+                <Th w="25%">
                   <Select
                     menuPosition={"fixed"}
                     styles={customStyles}
@@ -108,13 +137,13 @@ export default function Home({ warzywa }) {
                     isClearable
                   />
                 </Th>
-                <Th>
+                <Th w="25%">
                   <Select
                     menuPosition={"fixed"}
                     styles={customStyles}
-                    options={monthList}
+                    options={rozsadaList}
                     instanceId="rozsada"
-                    placeholder="Kiedy na rozsadę"
+                    placeholder="Siew na rozsadę w domu"
                     getOptionLabel={(option) => `${option.label}`}
                     getOptionValue={(option) => `${option.value}`}
                     onChange={(values) =>
@@ -123,13 +152,13 @@ export default function Home({ warzywa }) {
                     isClearable
                   />
                 </Th>
-                <Th>
+                <Th w="25%">
                   <Select
                     menuPosition={"fixed"}
                     styles={customStyles}
-                    options={monthList}
+                    options={doniczkaList}
                     instanceId="doniczka"
-                    placeholder="Kiedy do doniczki"
+                    placeholder="Siew do doniczki na balkonie"
                     getOptionLabel={(option) => `${option.label}`}
                     getOptionValue={(option) => `${option.value}`}
                     onChange={(values) =>
@@ -138,13 +167,13 @@ export default function Home({ warzywa }) {
                     isClearable
                   />
                 </Th>
-                <Th>
+                <Th w="25%">
                   <Select
                     menuPosition={"fixed"}
                     styles={customStyles}
-                    options={monthList}
+                    options={balkonList}
                     instanceId="balkon"
-                    placeholder="Kiedy na balkon"
+                    placeholder="Od kiedy wystawić na stałe na balkon"
                     isOptionUnique="true"
                     getOptionLabel={(option) => `${option.label}`}
                     getOptionValue={(option) => `${option.value}`}
@@ -229,6 +258,6 @@ export async function getStaticProps() {
     props: {
       warzywa,
     },
-    revalidate: 2, // In seconds
+    revalidate: 1, // In seconds
   };
 }
