@@ -15,42 +15,29 @@ import {
   TableContainer,
   Flex,
   Spacer,
+  Text,
 } from "@chakra-ui/react";
 import { Center } from "@chakra-ui/react";
 
 const getWarzywa = async (key) => {
-  console.log(key);
   const warzywniak = key.queryKey[1].warzywniak;
   const balkonMiesiac = key.queryKey[1].balkon;
   const doniczkaMiesiac = key.queryKey[1].doniczka;
   const rozsadaMiesiac = key.queryKey[1].rozsada;
 
   const url = `${API_URL}/api/warzywas?populate=*`;
-
   if (balkonMiesiac) {
-    url += `&filters[balkon][$eq]=${balkonMiesiac}`;
+    url += `&filters[balkon][kiedy][$eq]=${balkonMiesiac}`;
   }
-
-  console.log(url);
-
   if (warzywniak) {
     url += `&filters[id][$eq]=${warzywniak}`;
   }
-
-  console.log(url);
-
   if (rozsadaMiesiac) {
-    url += `&filters[rozsada][$eq]=${rozsadaMiesiac}`;
+    url += `&filters[rozsada][kiedy][$eq]=${rozsadaMiesiac}`;
   }
-
-  console.log(url);
-
   if (doniczkaMiesiac) {
-    url += `&filters[doniczka][$eq]=${doniczkaMiesiac}`;
+    url += `&filters[doniczka][kiedy][$eq]=${doniczkaMiesiac}`;
   }
-
-  console.log(url);
-
   const res = await fetch(url);
   return res.json();
 };
@@ -61,7 +48,7 @@ export default function Home({ warzywa }) {
   const [balkonMiesiac, setBalkonMiesiac] = useState(null);
   const [doniczkaMiesiac, setDoniczkaMiesiac] = useState(null);
   const [rozsadaMiesiac, setRozsadaMiesiac] = useState(null);
-  console.log(warzywa);
+
   const { data, status } = useQuery(
     [
       "warzywa",
@@ -92,86 +79,86 @@ export default function Home({ warzywa }) {
     { value: "listopad", label: "Listopad" },
     { value: "grudzień", label: "Grudzień" },
   ];
-
   const customStyles = {
     menuPortal: (provided) => ({ ...provided, zIndex: 5 }),
   };
+  console.log(status);
 
   return (
     <>
-      <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>
-                <Select
-                  menuPosition={"fixed"}
-                  styles={customStyles}
-                  options={warzywa.data}
-                  instanceId="warzywa"
-                  placeholder="Roślina"
-                  getOptionLabel={(option) => `${option.attributes.name}`}
-                  getOptionValue={(option) => `${option.id}`}
-                  onChange={(values) =>
-                    setWarzywniak(values ? values.id : null)
-                  }
-                  isClearable
-                />
-              </Th>
-              <Th>
-                <Select
-                  menuPosition={"fixed"}
-                  styles={customStyles}
-                  options={monthList}
-                  instanceId="rozsada"
-                  placeholder="Kiedy na rozsadę"
-                  getOptionLabel={(option) => `${option.label}`}
-                  getOptionValue={(option) => `${option.value}`}
-                  onChange={(values) =>
-                    setRozsadaMiesiac(values ? values.value : null)
-                  }
-                  isClearable
-                />
-              </Th>
-              <Th>
-                <Select
-                  menuPosition={"fixed"}
-                  styles={customStyles}
-                  options={monthList}
-                  instanceId="doniczka"
-                  placeholder="Kiedy do doniczki"
-                  getOptionLabel={(option) => `${option.label}`}
-                  getOptionValue={(option) => `${option.value}`}
-                  onChange={(values) =>
-                    setDoniczkaMiesiac(values ? values.value : null)
-                  }
-                  isClearable
-                />
-              </Th>
-              <Th>
-                <Select
-                  menuPosition={"fixed"}
-                  styles={customStyles}
-                  options={monthList}
-                  instanceId="balkon"
-                  placeholder="Kiedy na balkon"
-                  isOptionUnique="true"
-                  getOptionLabel={(option) => `${option.label}`}
-                  getOptionValue={(option) => `${option.value}`}
-                  onChange={(values) =>
-                    setBalkonMiesiac(values ? values.value : null)
-                  }
-                  isClearable
-                />
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {status === "loading" && <div>Ładowanie wrzywniaka</div>}
-            {status === "error" && <div>Ups... coś przestało działać</div>}
-            {status === "success" &&
-              data.data.map((warzywo, index) => (
-                <Tr>
+      {status === "loading" && <Text fontSize="6xl">Ładowanie wrzywniaka</Text>}
+      {status === "error" && <div>Ups... coś przestało działać</div>}
+      {status === "success" && (
+        <TableContainer>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>
+                  <Select
+                    menuPosition={"fixed"}
+                    styles={customStyles}
+                    options={warzywa.data}
+                    instanceId="warzywa"
+                    placeholder="Roślina"
+                    getOptionLabel={(option) => `${option.attributes.name}`}
+                    getOptionValue={(option) => `${option.id}`}
+                    onChange={(values) =>
+                      setWarzywniak(values ? values.id : null)
+                    }
+                    isClearable
+                  />
+                </Th>
+                <Th>
+                  <Select
+                    menuPosition={"fixed"}
+                    styles={customStyles}
+                    options={monthList}
+                    instanceId="rozsada"
+                    placeholder="Kiedy na rozsadę"
+                    getOptionLabel={(option) => `${option.label}`}
+                    getOptionValue={(option) => `${option.value}`}
+                    onChange={(values) =>
+                      setRozsadaMiesiac(values ? values.value : null)
+                    }
+                    isClearable
+                  />
+                </Th>
+                <Th>
+                  <Select
+                    menuPosition={"fixed"}
+                    styles={customStyles}
+                    options={monthList}
+                    instanceId="doniczka"
+                    placeholder="Kiedy do doniczki"
+                    getOptionLabel={(option) => `${option.label}`}
+                    getOptionValue={(option) => `${option.value}`}
+                    onChange={(values) =>
+                      setDoniczkaMiesiac(values ? values.value : null)
+                    }
+                    isClearable
+                  />
+                </Th>
+                <Th>
+                  <Select
+                    menuPosition={"fixed"}
+                    styles={customStyles}
+                    options={monthList}
+                    instanceId="balkon"
+                    placeholder="Kiedy na balkon"
+                    isOptionUnique="true"
+                    getOptionLabel={(option) => `${option.label}`}
+                    getOptionValue={(option) => `${option.value}`}
+                    onChange={(values) =>
+                      setBalkonMiesiac(values ? values.value : null)
+                    }
+                    isClearable
+                  />
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data.data.map((warzywo, index) => (
+                <Tr key={index}>
                   <Td>
                     <Flex>
                       <Center w="90px">
@@ -190,14 +177,46 @@ export default function Home({ warzywa }) {
                       <Center>{warzywo.attributes.name}</Center>
                     </Flex>
                   </Td>
-                  <Td>{warzywo.attributes.rozsada}</Td>
-                  <Td>{warzywo.attributes.doniczka}</Td>
-                  <Td>{warzywo.attributes.balkon}</Td>
+                  <Td>
+                    <Flex>
+                      {status === "success" &&
+                        warzywo.attributes.rozsada.map((kiedy, index) => (
+                          <Center key={index}>
+                            {index ? ", " : ""}
+                            {kiedy.kiedy}
+                            {kiedy.prefix ? ` (${kiedy.prefix})` : null}
+                          </Center>
+                        ))}
+                    </Flex>
+                  </Td>
+                  <Td>
+                    <Flex>
+                      {warzywo.attributes.doniczka.map((kiedy, index) => (
+                        <Center key={index}>
+                          {index ? ", " : ""}
+                          {kiedy.kiedy}
+                          {kiedy.prefix ? ` (${kiedy.prefix})` : null}
+                        </Center>
+                      ))}
+                    </Flex>
+                  </Td>
+                  <Td>
+                    <Flex>
+                      {status === "success" &&
+                        warzywo.attributes.balkon.map((kiedy, index) => (
+                          <Center key={index}>
+                            {kiedy.kiedy} {index ? ", " : ""}
+                            {kiedy.prefix ? ` (${kiedy.prefix})` : null}
+                          </Center>
+                        ))}
+                    </Flex>
+                  </Td>
                 </Tr>
               ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Tbody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 }
