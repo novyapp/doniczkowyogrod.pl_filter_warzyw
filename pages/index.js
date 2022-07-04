@@ -111,7 +111,6 @@ export default function Home({ warzywa }) {
   const customStyles = {
     menuPortal: (provided) => ({ ...provided, zIndex: 5 }),
   };
-  console.log(status);
 
   return (
     <>
