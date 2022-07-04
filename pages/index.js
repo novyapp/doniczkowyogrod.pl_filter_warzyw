@@ -22,7 +22,7 @@ const getWarzywa = async (key) => {
   const doniczkaMiesiac = key.queryKey[1].doniczka;
   const rozsadaMiesiac = key.queryKey[1].rozsada;
 
-  const url = `${API_URL}/api/warzywas?populate=*&pagination[limit]=100`;
+  const url = `${API_URL}/api/warzywas?populate=*&pagination[limit]=100&sort=name%3Aasc`;
   if (balkonMiesiac) {
     url += `&filters[balkon][kiedy][$eq]=${balkonMiesiac}`;
   }
@@ -250,7 +250,7 @@ export default function Home({ warzywa }) {
 
 export async function getStaticProps() {
   const resWarzywa = await fetch(
-    `${API_URL}/api/warzywas?populate=%2A&pagination[limit]=100`
+    `${API_URL}/api/warzywas?populate=%2A&pagination[limit]=100&sort=name%3Aasc`
   );
   const warzywa = await resWarzywa.json();
 
