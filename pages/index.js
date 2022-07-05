@@ -116,6 +116,8 @@ export default function Home({ warzywa }) {
     { value: "grudzień", label: "Grudzień" },
   ];
 
+  console.log(warzywa.data);
+
   const customStyles = {
     menuPortal: (provided) => ({ ...provided, zIndex: 5 }),
   };
@@ -274,7 +276,7 @@ export default function Home({ warzywa }) {
 
 export async function getStaticProps() {
   const resWarzywa = await fetch(
-    `${API_URL}/api/warzywas?populate=%2A&pagdination[limit]=100&sort=name%3Aasc`
+    `${API_URL}/api/warzywas?populate=%2A&pagination[limit]=100&sort=name%3Aasc`
   );
   const warzywa = await resWarzywa.json();
 
